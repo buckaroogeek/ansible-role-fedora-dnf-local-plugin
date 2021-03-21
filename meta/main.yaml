@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  author: Brad Smith
+  description: Installs and configures DNF local plugin
+  company: SageCreek Software
+
+  license: license (BSD)
+
+  min_ansible_version: 2.1
+
+  platforms:
+   - name: Fedora
+     versions:
+  #   - 33
+
+  galaxy_tags:
+    - fedora
+    - dnf
+    - plugin
+    - repository
+
+dependencies: []
+...

@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+    - name: "Include fedora_dnf_local_plugin"
+      include_role:
+        name: "fedora_dnf_local_plugin"

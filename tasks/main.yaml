@@ -1,0 +1,33 @@
+---
+# tasks file for fedora_dnf_local_plugin
+
+# install dnf local plugin and createrepo_c
+- name: Install DNF local plugin
+  ansible.builtin.package:
+    name: "{{ dlp_packages }}"
+    state: present
+
+# Set enabled
+- name: Set enabled in conf
+  community.general.ini_file:
+    path: "{{ dlp_conf }}"
+    section: main
+    option: enabled
+    value: "{{ dlp_enabled }}"
+
+# set repodir
+- name: Set repodir in conf
+  community.general.ini_file:
+    path: "{{ dlp_conf }}"
+    section: main
+    option: repodir
+    value: "{{ dlp_repodir }}"
+
+# set createrepo enabled
+- name: Set createrepo enabled in conf
+  community.general.ini_file:
+    path: "{{ dlp_conf }}"
+    section: createrepo
+    option: enabled
+    value: "{{ dlp_createrepo_enabled }}"
+...

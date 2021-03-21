@@ -1,0 +1,18 @@
+---
+# defaults file for fedora_dnf_local_plugin
+
+# options in [main] section of ini configuration file
+# default state for plugin
+dlp_enabled: "true"
+
+# the file system name for the local repository
+dlp_repodir: /var/lib/dnf/plugins/local
+
+# options in [createrepo] section of ini configuration file
+# use createrepo; if false, the repo needs to exist. createrepo is
+# only executed by the plugin if the repodir does not contain repository
+# artifacts. No adverse effect to setting as 'true' on multiple machines that
+# share the same repodir
+dlp_createrepo_enabled: "true"
+
+...

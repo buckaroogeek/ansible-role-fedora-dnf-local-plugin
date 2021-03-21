@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+    type: libvirt
+    options:
+      memory: 2048
+      cpus: 1
+platforms:
+  - name: testf33
+    box: fedora/33-cloud-base
+    memory: 2048
+    cpus: 1
+provisioner:
+  name: ansible
+  options:
+    vvv: true
+  connection_options:
+    ansible_ssh_user: vagrant
+    ansible_become: true
+  log: true
+verifier:
+  name: ansible
