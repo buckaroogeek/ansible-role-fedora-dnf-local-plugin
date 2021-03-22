@@ -7,10 +7,11 @@
     name: "{{ dlp_packages }}"
     state: present
 
-# Set enabled
-- name: Set enabled in conf
+# Backup configuration file and set enabled attribute
+- name: Set enabled in conf and backup
   community.general.ini_file:
     path: "{{ dlp_conf }}"
+    backup: true
     section: main
     option: enabled
     value: "{{ dlp_enabled }}"
