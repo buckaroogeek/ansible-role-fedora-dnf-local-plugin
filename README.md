@@ -8,16 +8,16 @@ Once one machine downloads and installs an rpm via dnf, other machines of the sa
 Requirements
 ------------
 
-The plugin will create the repository path if needed and will also initiate the repository if needed. If all machines are VMs on the same physical hardware, then the repository path can be local to that machine. If machines are on a local network then the repository needs to be on a shared file system. In the spirit of focusing a role on a single purpose, this role will not attach a shared file system but there is an example below of how this can easily be accomplished with an NFS share and a Fedora NFS Attach role.
+The plugin will create the repository path if needed and will also initiate the repository if needed. If all machines are VMs on the same physical hardware, then the repository path can be local to that machine. If machines are on a local network then the repository needs to be on a shared file system. In the spirit of focusing a role on a single purpose, this role will not attach a shared file system but there is an example below of how this can easily be accomplished with an NFS share and a separate role that attaches the NFS share.
 
 Role Variables
 --------------
 
-Available variables are listed below, along with default values (see `defaults/main.yaml`):
+End user configurable variables are listed below, along with default values (see `defaults/main.yaml`):
 
 | Variable   | Default Value | Notes |
 | ---------- | ------------- | ----- |
-| dlp_enabled | true | Enables (true) or disables (false) use of local repodir |
+| dlp_enabled | true | Enables (true) or disables (false) use of local repository |
 | dlp_repodir | /var/lib/dnf/plugins/local | filesystem directory for the local repository |
 | dlp_createrepo_enabled | true    | Enable plugin to create local repo if repodir does not contain repository artifacts |
 
@@ -43,7 +43,7 @@ TBD - simple example on using dnf repomanage to manage repo contents
 Example Playbooks
 ----------------
 
-The partial playbook below executes the role with default options. The next time dnf is executed, the role will create the directory for the local repository if needed, download and install the rpms identified by dnf, copy the rpms to the new local repo, and run createrepo_c, also if needed. On a future run of dnf, the local repository is checked first before sending the query to a fedora mirror. 
+The partial playbook below executes the role with default options. After completion, the next time dnf is executed, the plugin will create the directory for the local repository if needed, download and install the rpms identified by dnf, copy the rpms to the new local repository, and run createrepo_c, also if needed. On a future run of dnf, the local repository is checked first before sending the query to a fedora mirror. 
 ```
 - name: Default plugin options
   hosts: all
