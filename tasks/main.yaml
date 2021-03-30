@@ -31,4 +31,9 @@
     section: createrepo
     option: enabled
     value: "{{ dlp_createrepo_enabled }}"
+
+# call systemctl daemon reload to update dnf configuration
+- name: Systemctl reload for dnf
+  ansible.builtin.systemd:
+    daemon_reload: true
 ...
