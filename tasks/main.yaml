@@ -32,8 +32,21 @@
     option: enabled
     value: "{{ dlp_createrepo_enabled }}"
 
+# check for presence of systemctl
+# may not exist on container for example
+- name: systemctl check
+  stat:
+    path: /usr/bin/systemctl
+  register: _statresult
+
+# message if no systemctl
+- name: systemctl message
+  debug:
+    msg: "{{ _statresult.stat.exists | ternary('systemctl found','no systemctl - skipping') }}"
+
 # call systemctl daemon reload to update dnf configuration
 - name: Systemctl reload for dnf
   ansible.builtin.systemd:
     daemon_reload: true
+  when: _statresult.stat.exists
 ...

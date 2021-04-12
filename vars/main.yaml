@@ -3,8 +3,8 @@
 
 # packages to install
 dlp_packages:
+  #- dnf-command(local)
   - python3-dnf-plugin-local
-  - createrepo_c
 
 # configuration file path; assumed to be ini format
 dlp_conf: /etc/dnf/plugins/local.conf
