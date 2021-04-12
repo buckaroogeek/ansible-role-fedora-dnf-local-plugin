@@ -1,0 +1,27 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+platforms:
+  - name: f33-local
+    image: registry.fedoraproject.org/fedora:latest
+    #    volumes:
+      #  - /var/cache/dnf:/var/cache/dnf:O
+    capabilities:
+      - SYS_ADMIN
+    pre_build_image: true
+provisioner:
+  name: ansible
+  defaults:
+    interpreter_python: auto_silent
+  ssh_connection:
+    pipelining: false
+  log: true
+verifier:
+  name: ansible
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+...
