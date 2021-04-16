@@ -1,4 +1,4 @@
-Fedora DNF Local Plugin Ansible Role
+Ansible Role - Fedora DNF Local Plugin
 =========
 
 Installs and configures the DNF Local Plugin on the target host (python3-dnf-plugin-local-4.0.18-1.fc33.noarch at the time of this writing). This plugin is useful when there are multiple machines on the same local area network that use Fedora and execute dnf to install or update rpms. These machines can be VMs, Raspberry PIs, desktops, and so on. 
