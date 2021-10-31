@@ -15,4 +15,9 @@ dlp_repodir: /var/lib/dnf/plugins/local
 # share the same repodir
 dlp_createrepo_enabled: "true"
 
+# Set dlp_cachedir to a directory on the local filesystem to accelerate
+# createrepo. When present, createrepo creates a cache of repository checksums
+# that are reused rather than recalculated each time createrepo is called.
+dlp_cachedir: ~
+
 ...

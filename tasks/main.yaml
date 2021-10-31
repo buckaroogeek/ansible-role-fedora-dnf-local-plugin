@@ -25,12 +25,21 @@
     value: "{{ dlp_repodir }}"
 
 # set createrepo enabled
-- name: Set createrepo enabled in conf
+- name: Set createrepo boolean in conf
   community.general.ini_file:
     path: "{{ dlp_conf }}"
     section: createrepo
     option: enabled
     value: "{{ dlp_createrepo_enabled }}"
+
+# set cachedir if defined
+- name: Set cachedir if defined
+  community.general.ini.file:
+    path: "{{ dlp_conf }}"
+    section: createrepo
+    option: cachedir
+    value: "{{ dlp_cachedir }}"
+  when: dlp_cachedir is directory
 
 # check for presence of systemctl
 # may not exist on container for example
