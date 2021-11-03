@@ -34,12 +34,12 @@
 
 # set cachedir if defined
 - name: Set cachedir if defined
-  community.general.ini.file:
+  community.general.ini_file:
     path: "{{ dlp_conf }}"
     section: createrepo
     option: cachedir
     value: "{{ dlp_cachedir }}"
-  when: dlp_cachedir is directory
+  when: (dlp_cachedir is defined) and (dlp_cachedir|length > 0)
 
 # check for presence of systemctl
 # may not exist on container for example
