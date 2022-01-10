@@ -1,10 +1,13 @@
 ---
 # vars file for fedora_dnf_local_plugin
 
-# packages to install
-dlp_packages:
+# dnf package to install
+dlp_dnf:
   #- dnf-command(local)
   - python3-dnf-plugin-local
+
+# list of nsf package
+dlp_nsf:
   - nfs-utils
 
 # configuration file path; assumed to be ini format

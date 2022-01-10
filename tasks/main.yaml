@@ -1,6 +1,12 @@
 ---
 # tasks file for fedora_dnf_local_plugin
 
+# if nfs_utils is true, include nfs_utils in package list to
+# install
+- name: NSF client check
+  set_fact:
+    dlp_packages: "{{ dlp_nfs_utils | ternary( dlp_dnf + dlp_nsf, dlp_dnf) }}"
+
 # install dnf local plugin and createrepo_c
 - name: Install DNF local plugin
   ansible.builtin.package:
@@ -15,6 +21,7 @@
     section: main
     option: enabled
     value: "{{ dlp_enabled }}"
+    mode: "644"
 
 # set repodir
 - name: Set repodir in conf
@@ -23,6 +30,7 @@
     section: main
     option: repodir
     value: "{{ dlp_repodir }}"
+    mode: "644"
 
 # set createrepo enabled
 - name: Set createrepo boolean in conf
@@ -31,6 +39,7 @@
     section: createrepo
     option: enabled
     value: "{{ dlp_createrepo_enabled }}"
+    mode: "644"
 
 # set cachedir if defined
 - name: Set cachedir if defined
@@ -39,6 +48,7 @@
     section: createrepo
     option: cachedir
     value: "{{ dlp_cachedir }}"
+    mode: "644"
   when: (dlp_cachedir is defined) and (dlp_cachedir|length > 0)
 
 # check for presence of systemctl

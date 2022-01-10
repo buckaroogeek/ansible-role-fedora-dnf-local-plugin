@@ -20,4 +20,8 @@ dlp_createrepo_enabled: "true"
 # that are reused rather than recalculated each time createrepo is called.
 dlp_cachedir: ~
 
+# dlp_nfs_util: true or false. When true, include nfs_utils package. Default is
+# true
+dlp_nfs_utils: "true"
+
 ...
