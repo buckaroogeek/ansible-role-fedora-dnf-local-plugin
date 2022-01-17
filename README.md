@@ -67,7 +67,7 @@ vars:
   tasks:
     - name: "Include fedora_nfs_mount"
       include_role:
-        name: "fedora_nfs_mount"
+        name: "fedora_nfs_client"
       vars:
         fnm_server: nfsserver.lan
         fnm_export: /srv/nfs-share/dnfrepo
