@@ -21,6 +21,7 @@ End user configurable variables are listed below, along with default values (see
 | dlp_repodir | /var/lib/dnf/plugins/local | filesystem directory for the local repository |
 | dlp_createrepo_enabled | true    | Enable plugin to create local repo if repodir does not contain repository artifacts |
 | dlp_nfs_utils | true    | Ensure nfs_utils package is installed when true. |
+| dlp_nfs_utilt_fast | false | Skips most tasks if true and dnf local plugin is already installed. |
 
 The variable below is defined in `./vars/main.yaml` and not intended for modification at runtime.
 | Variable   | Default Value | Notes |

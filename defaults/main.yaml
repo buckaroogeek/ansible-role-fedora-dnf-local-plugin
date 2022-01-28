@@ -24,4 +24,8 @@ dlp_cachedir: ~
 # true
 dlp_nfs_utils: "true"
 
+# dlp_exit_fast: true or false if true, exit from role immediately if
+# already installed. Install test is presence of conf file (dlp_conf)
+dlp_exit_fast: "false"
+
 ...

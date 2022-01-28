@@ -1,71 +1,85 @@
 ---
 # tasks file for fedora_dnf_local_plugin
 
-# if nfs_utils is true, include nfs_utils in package list to
-# install
-- name: NSF client check
-  set_fact:
-    dlp_packages: "{{ dlp_nfs_utils | ternary( dlp_dnf + dlp_nsf, dlp_dnf) }}"
-
-# install dnf local plugin and createrepo_c
-- name: Install DNF local plugin
-  ansible.builtin.package:
-    name: "{{ dlp_packages }}"
-    state: present
-
-# Backup configuration file and set enabled attribute
-- name: Set enabled in conf and backup
-  community.general.ini_file:
-    path: "{{ dlp_conf }}"
-    backup: true
-    section: main
-    option: enabled
-    value: "{{ dlp_enabled }}"
-    mode: "644"
-
-# set repodir
-- name: Set repodir in conf
-  community.general.ini_file:
-    path: "{{ dlp_conf }}"
-    section: main
-    option: repodir
-    value: "{{ dlp_repodir }}"
-    mode: "644"
-
-# set createrepo enabled
-- name: Set createrepo boolean in conf
-  community.general.ini_file:
-    path: "{{ dlp_conf }}"
-    section: createrepo
-    option: enabled
-    value: "{{ dlp_createrepo_enabled }}"
-    mode: "644"
-
-# set cachedir if defined
-- name: Set cachedir if defined
-  community.general.ini_file:
-    path: "{{ dlp_conf }}"
-    section: createrepo
-    option: cachedir
-    value: "{{ dlp_cachedir }}"
-    mode: "644"
-  when: (dlp_cachedir is defined) and (dlp_cachedir|length > 0)
-
-# check for presence of systemctl
-# may not exist on container for example
-- name: systemctl check
+# Test for presence of plugin and exit fast if dlp_exist_fast
+# is true
+- name: Plugin install check
   stat:
-    path: /usr/bin/systemctl
-  register: _statresult
+    name: "{{ dlp_conf }"
+  register: localcfg
 
-# message if no systemctl
-- name: systemctl message
-  debug:
-    msg: "{{ _statresult.stat.exists | ternary('systemctl found','no systemctl - skipping') }}"
+# block remaining tasks. Skip block if dlp_exit_fast is true AND
+# if the plugin is already installed (test above)
+- name: Install and configure the dnf local plugin
+  block:
 
-# call systemctl daemon reload to update dnf configuration
-- name: Systemctl reload for dnf
-  ansible.builtin.systemd:
-    daemon_reload: true
-  when: _statresult.stat.exists
+    # if nfs_utils is true, include nfs_utils in package list to
+    # install
+    - name: NSF client check
+      set_fact:
+        dlp_packages: "{{ dlp_nfs_utils | ternary( dlp_dnf + dlp_nsf, dlp_dnf) }}"
+
+    # install dnf local plugin and createrepo_c
+    - name: Install DNF local plugin
+      ansible.builtin.package:
+        name: "{{ dlp_packages }}"
+        state: present
+
+    # Backup configuration file and set enabled attribute
+    - name: Set enabled in conf and backup
+      community.general.ini_file:
+        path: "{{ dlp_conf }}"
+        backup: true
+        section: main
+        option: enabled
+        value: "{{ dlp_enabled }}"
+        mode: "644"
+
+    # set repodir
+    - name: Set repodir in conf
+      community.general.ini_file:
+        path: "{{ dlp_conf }}"
+        section: main
+        option: repodir
+        value: "{{ dlp_repodir }}"
+        mode: "644"
+
+    # set createrepo enabled
+    - name: Set createrepo boolean in conf
+      community.general.ini_file:
+        path: "{{ dlp_conf }}"
+        section: createrepo
+        option: enabled
+        value: "{{ dlp_createrepo_enabled }}"
+        mode: "644"
+
+    # set cachedir if defined
+    - name: Set cachedir if defined
+      community.general.ini_file:
+        path: "{{ dlp_conf }}"
+        section: createrepo
+        option: cachedir
+        value: "{{ dlp_cachedir }}"
+        mode: "644"
+      when: (dlp_cachedir is defined) and (dlp_cachedir|length > 0)
+
+    # check for presence of systemctl
+    # may not exist on container for example
+    - name: systemctl check
+      stat:
+        path: /usr/bin/systemctl
+      register: _statresult
+
+    # message if no systemctl
+    - name: systemctl message
+      debug:
+        msg: "{{ _statresult.stat.exists | ternary('systemctl found','no systemctl - skipping') }}"
+
+    # call systemctl daemon reload to update dnf configuration
+    - name: Systemctl reload for dnf
+      ansible.builtin.systemd:
+        daemon_reload: true
+      when: _statresult.stat.exists
+  when: not (dlp_exit_fast and localcfg.stat.exists )
+
 ...
