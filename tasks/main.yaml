@@ -4,8 +4,8 @@
 # Test for presence of plugin and exit fast if dlp_exist_fast
 # is true
 - name: Plugin install check
-  stat:
-    name: "{{ dlp_conf }"
+  ansible.builtin.stat:
+    path: "{{ dlp_conf }}"
   register: localcfg
 
 # block remaining tasks. Skip block if dlp_exit_fast is true AND
@@ -66,7 +66,7 @@
     # check for presence of systemctl
     # may not exist on container for example
     - name: systemctl check
-      stat:
+      ansible.builtin.stat:
         path: /usr/bin/systemctl
       register: _statresult
 
